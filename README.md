@@ -313,7 +313,7 @@ Non — c’est un outil pédagogique. Pour usages avancés/professionnels, util
 ## Licence
 ```
 MIT License
-(c) TonNom 2025
+(c) Atchekzai Léo 2025
 ```
 
 ---

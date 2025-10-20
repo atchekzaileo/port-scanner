@@ -3,8 +3,6 @@ __pycache__/
 *.pyc
 scans_history.db
 /tmp/http_server.log
-tests/scan_test_8000.json
-tests/scan_test_ssh.json
 *.log
 scan.json
 scan.csv

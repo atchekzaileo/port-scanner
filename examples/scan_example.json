@@ -1,0 +1,20 @@
+{
+    "metadata": {
+      "target": "127.0.0.1",
+      "ip": "127.0.0.1",
+      "ports_scanned": "8000-8000",
+      "count": 1,
+      "timeout": 0.8,
+      "threads": 100,
+      "scan_time": "2025-10-20T00:00:00Z"
+    },
+    "results": [
+      {
+        "port": 8000,
+        "state": "open",
+        "service": "http",
+        "banner": "HTTP/1.0 200 OK\\r\\nServer: SimpleHTTP/0.6 Python/3.9.6"
+      }
+    ]
+  }
+  

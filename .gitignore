@@ -6,3 +6,5 @@ scans_history.db
 tests/scan_test_8000.json
 tests/scan_test_ssh.json
 *.log
+scan.json
+scan.csv

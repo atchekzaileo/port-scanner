@@ -30,17 +30,16 @@ port-scanner/
 ├── .gitignore
 │
 ├── tests/
-│   ├── test_auto.sh       
+│   ├── test_auto.sh    
 │   └── test_auto_docker.sh 
 │
 ├── examples/
 │   └── scan_example.json  
 │
-└── screenshots/           
+└── screenshots/  
     ├── terminal_scan.png
     └── dashboard_view.png
 
----
 
 ## Prérequis
 - Python 3.8+

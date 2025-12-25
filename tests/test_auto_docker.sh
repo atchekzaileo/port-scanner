@@ -2,48 +2,60 @@
 set -euo pipefail
 cd "$(dirname "$0")/.." || exit 1
 
-# Activate venv if present
 if [ -f ".venv/bin/activate" ]; then
   source .venv/bin/activate
 fi
 
 if ! command -v docker >/dev/null 2>&1; then
-  echo "[docker] Docker not found"
+  echo "[docker] docker introuvable"
   exit 1
 fi
 
-docker rm -f test_sshd >/dev/null 2>&1 || true
+container_name="test_sshd"
+host_port="2222"
 
-echo "[docker] Trying rastasheep/ubuntu-sshd:18.04 (may fail on Apple Silicon)..."
-set +e
-docker run -d -p 2222:22 --name test_sshd rastasheep/ubuntu-sshd:18.04 >/dev/null 2>&1
-RC=$?
-set -e
+docker rm -f "$container_name" >/dev/null 2>&1 || true
 
-if [ $RC -ne 0 ]; then
-  echo "[docker] Fallback: linuxserver/openssh-server (multi-arch)"
-  docker run -d --name test_sshd -p 2222:2222 -e PUID=1000 -e PGID=1000 -e PASSWORD_ACCESS=true -e USER_PASSWORD=pass1234 -e USER_NAME=test ghcr.io/linuxserver/openssh-server:latest >/dev/null 2>&1
-  echo "[docker] launched linuxserver openssh on 2222"
+echo "[docker] démarrage SSH de test..."
+
+if docker run -d -p "${host_port}:22" --name "$container_name" rastasheep/ubuntu-sshd:18.04 >/dev/null 2>&1; then
+  echo "[docker] image rastasheep OK (22 -> ${host_port})"
 else
-  echo "[docker] launched rastasheep image mapping 22->2222"
+  echo "[docker] fallback: linuxserver/openssh-server (multi-arch)"
+  docker run -d \
+    --name "$container_name" \
+    -p "${host_port}:2222" \
+    -e PUID=1000 \
+    -e PGID=1000 \
+    -e PASSWORD_ACCESS=true \
+    -e USER_PASSWORD=pass1234 \
+    -e USER_NAME=test \
+    ghcr.io/linuxserver/openssh-server:latest >/dev/null
+  echo "[docker] image linuxserver OK (2222 -> ${host_port})"
 fi
 
 sleep 2
 
-echo "[scan] Scanning 127.0.0.1:2222"
-python3 scanner.py -t 127.0.0.1 -p 2222 --show-open --json tests/scan_test_ssh.json --db
+out_json="tests/scan_test_ssh.json"
+echo "[scan] 127.0.0.1:${host_port}"
+python3 scanner.py -t 127.0.0.1 -p "${host_port}" --show-open --json "$out_json" --db
 
 python3 - <<'PY'
 import json
-d=json.load(open('tests/scan_test_ssh.json'))
-opens=[r for r in d['results'] if r['state']=='open']
-print('[scan] Open ports:', [r['port'] for r in opens])
-for r in d['results']:
-    if r['port']==2222:
-        print('[scan] service:', r.get('service'))
-        print('[scan] banner:', (r.get('banner') or '')[:300])
+
+with open("tests/scan_test_ssh.json", "r", encoding="utf-8") as f:
+    d = json.load(f)
+
+opens = [r for r in d.get("results", []) if r.get("state") == "open"]
+print("[scan] open ports:", [r.get("port") for r in opens])
+
+for r in d.get("results", []):
+    if r.get("port") == 2222:
+        banner = (r.get("banner") or "")[:300]
+        print("[scan] service:", r.get("service"))
+        print("[scan] banner:", banner)
 PY
 
-echo "[docker] cleaning up"
-docker rm -f test_sshd >/dev/null 2>&1 || true
+echo "[docker] nettoyage"
+docker rm -f "$container_name" >/dev/null 2>&1 || true
 echo "[done]"

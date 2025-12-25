@@ -21,7 +21,23 @@ Le projet est conçu pour être utilisé sur des environnements locaux (localhos
 ---
 
 ## Structure du projet
-port-scanner/ ├── scanner.py ├── dashboard.py ├── requirements.txt ├── README.md ├── .gitignore ├── tests/ │ ├── test_auto.sh │ └── test_auto_docker.sh └── examples/ └── scan_example.json
+port-scanner/
+├── scanner.py              # Scan TCP + fingerprint + historique
+├── dashboard.py            # Dashboard Flask (historique / diff)
+├── requirements.txt        # Dépendances Python
+├── README.md               # Documentation
+├── .gitignore
+│
+├── tests/
+│   ├── test_auto.sh        # Test HTTP local
+│   └── test_auto_docker.sh # Test SSH via Docker
+│
+├── examples/
+│   └── scan_example.json   # Exemple de sortie
+│
+└── screenshots/            # (optionnel)
+    ├── terminal_scan.png
+    └── dashboard_view.png
 
 ---
 

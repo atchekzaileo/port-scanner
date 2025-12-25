@@ -73,22 +73,15 @@ python3 scanner.py -t 127.0.0.1 -p 1-1024 --db --diff
 Historisation et détection des changements
 
 Les scans sauvegardés en base SQLite permettent d’identifier :
-
-les ports nouvellement ouverts
-
-les ports fermés depuis le dernier scan
-
-Cette fonctionnalité est utile pour observer l’évolution d’un service ou d’un environnement dans le temps.
-
-Dashboard
+- les ports nouvellement ouverts
+- les ports fermés depuis le dernier scan
+- Cette fonctionnalité est utile pour observer l’évolution d’un service ou d’un environnement dans le temps.
+- Dashboard
 
 Une application Flask minimale permet de :
-
-lister les scans enregistrés
-
-consulter le détail d’un scan
-
-visualiser les différences avec le scan précédent
+- lister les scans enregistrés
+- consulter le détail d’un scan
+- visualiser les différences avec le scan précédent
 
 Lancement :
 ```bash
@@ -100,31 +93,25 @@ Puis ouvrir :
 ```bash
 http://127.0.0.1:5001
 ```
-Tests
-
+## Tests
 Des scripts sont fournis pour tester automatiquement :
+- un service HTTP local
+- un service SSH via conteneur Docker
 
-un service HTTP local
-
-un service SSH via conteneur Docker
 ```bash
 chmod +x tests/test_auto.sh
 ./tests/test_auto.sh
 ```
-Limitations
-
+## Limitations
 Scanner TCP de type connect, pas de SYN scan
-
 Outil pédagogique, non destiné à un usage de production
-
 Dashboard Flask non sécurisé (serveur de développement)
 
-Sécurité et éthique
-
+## Sécurité et éthique
 Ce projet doit être utilisé uniquement sur des machines ou réseaux pour lesquels une autorisation explicite a été donnée.
 Les exemples fournis utilisent exclusivement des environnements locaux.
 
-Licence
+## Licence
 
 MIT License
 © 2025 — Léo Atchekzai

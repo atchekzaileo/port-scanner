@@ -23,10 +23,11 @@ Le projet est conçu pour être utilisé sur des environnements locaux (localhos
 ## Structure du projet
 
 <img
-  src="https://github.com/user-attachments/assets/05bd9fd9-1912-48e4-b70f-9974193de957"
-  alt="Terminal scan"
+  src="URL"
   width="800"
+  style="filter: invert(1) hue-rotate(180deg);"
 />
+
 
 
 ---

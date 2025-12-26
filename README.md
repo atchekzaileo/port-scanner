@@ -29,16 +29,17 @@ port-scanner/
 ├── .gitignore
 │
 ├── tests/
-│   ├── test_auto.sh
-│   └── test_auto_docker.sh
+│ ├── test_auto.sh
+│ └── test_auto_docker.sh
 │
 ├── examples/
-│   └── scan_example.json
+│ └── scan_example.json
 │
 └── screenshots/
-    ├── terminal_scan.png
-    └── dashboard_view.png
+├── terminal_scan.png
+└── dashboard_view.png
 
+---
 
 ## Prérequis
 - Python 3.8+
@@ -46,6 +47,8 @@ port-scanner/
 - (Optionnel) Docker pour les tests SSH automatisés
 
 Il est recommandé d’utiliser un environnement virtuel Python.
+
+---
 
 ## Installation
 ```bash
@@ -56,10 +59,26 @@ pip install -r requirements.txt
 ```
 ## Utilisation
 
+Pour voir des ports ouverts, il faut qu’un service écoute réellement sur la machine cible.
+Si aucun service n’est actif, le scanner affichera uniquement des ports closed, ce qui est un comportement normal.
+
+## Exemple simple (HTTP local)
+
+Dans un premier terminal :
+```bash
+python3 -m http.server 8000
+```
+
+Dans un second terminal (avec le venv activé) :
+```bash
+python3 scanner.py -t 127.0.0.1 -p 8000 --show-open --db --diff
+```
+
 Scan simple sur localhost :
 ```bash
 python3 scanner.py -t 127.0.0.1 -p 1-1024
 ```
+
 Afficher uniquement les ports ouverts :
 ```bash
 python3 scanner.py -t 127.0.0.1 -p 1-1024 --show-open
@@ -79,18 +98,22 @@ Comparer avec le scan précédent :
 ```bash
 python3 scanner.py -t 127.0.0.1 -p 1-1024 --db --diff
 ```
-Historisation et détection des changements
+## Historisation et détection des changements
 
 Les scans sauvegardés en base SQLite permettent d’identifier :
 - les ports nouvellement ouverts
 - les ports fermés depuis le dernier scan
-- Cette fonctionnalité est utile pour observer l’évolution d’un service ou d’un environnement dans le temps.
-- Dashboard
+
+Cette fonctionnalité est utile pour observer l’évolution d’un service ou d’un environnement dans le temps.
+
+## Dashboard
 
 Une application Flask minimale permet de :
 - lister les scans enregistrés
 - consulter le détail d’un scan
 - visualiser les différences avec le scan précédent
+
+Le dashboard nécessite au moins un scan exécuté avec l’option --db.
 
 Lancement :
 ```bash
@@ -98,23 +121,27 @@ export FLASK_APP=dashboard.py    # Windows PowerShell : $env:FLASK_APP='dashboar
 flask run --host=0.0.0.0 --port=5001
 ```
 
-Puis ouvrir :
+Puis ouvrir dans un navigateur :
 ```bash
 http://127.0.0.1:5001
 ```
 ## Tests
+
 Des scripts sont fournis pour tester automatiquement :
 - un service HTTP local
 - un service SSH via conteneur Docker
-
-```bash
+```bash  
 chmod +x tests/test_auto.sh
 ./tests/test_auto.sh
 ```
+
+⚠️ Le test SSH nécessite que Docker Desktop soit installé et démarré.
+Si Docker n’est pas disponible, le test SSH est simplement ignoré.
+
 ## Limitations
-Scanner TCP de type connect, pas de SYN scan
-Outil pédagogique, non destiné à un usage de production
-Dashboard Flask non sécurisé (serveur de développement)
+- Scanner TCP de type connect (pas de SYN scan)
+- Outil pédagogique, non destiné à un usage de production
+- Dashboard Flask non sécurisé (serveur de développement)
 
 ## Sécurité et éthique
 Ce projet doit être utilisé uniquement sur des machines ou réseaux pour lesquels une autorisation explicite a été donnée.

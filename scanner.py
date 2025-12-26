@@ -9,6 +9,7 @@ import socket
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
+from typing import Optional
 
 from colorama import Fore, Style, init as colorama_init
 from tqdm import tqdm
@@ -115,7 +116,7 @@ def save_scan_to_db(meta: dict, results: list[dict], db_path: str = DB_FILE) -> 
         return int(scan_id)
 
 
-def get_last_scan_id_for_target(target: str, ip: str, db_path: str = DB_FILE) -> int | None:
+def get_last_scan_id_for_target(target: str, ip: str, db_path: str = DB_FILE) -> Optional[int]:
     ensure_db(db_path)
     with sqlite3.connect(db_path) as conn:
         cur = conn.cursor()
@@ -134,7 +135,7 @@ def get_results_by_scan(scan_id: int, db_path: str = DB_FILE) -> dict[int, str]:
         return {int(p): str(s) for (p, s) in cur.fetchall()}
 
 
-def try_recv_banner(host: str, port: int, timeout: float) -> str | None:
+def try_recv_banner(host: str, port: int, timeout: float) -> Optional[str]:
     try:
         with socket.create_connection((host, port), timeout=timeout) as s:
             s.settimeout(timeout)
@@ -149,7 +150,7 @@ def try_recv_banner(host: str, port: int, timeout: float) -> str | None:
         return None
 
 
-def http_fingerprint(host: str, port: int, timeout: float) -> str | None:
+def http_fingerprint(host: str, port: int, timeout: float) -> Optional[str]:
     try:
         with socket.create_connection((host, port), timeout=timeout) as s:
             s.settimeout(timeout)
@@ -187,7 +188,7 @@ def parse_ssh_version(text: str) -> str:
     return ""
 
 
-def detect_service(port: int, banner: str | None) -> str | None:
+def detect_service(port: int, banner: Optional[str]) -> Optional[str]:
     b = (banner or "").lower()
 
     if "ssh-" in b:
@@ -246,7 +247,7 @@ def scan_tcp(host: str, ports: list[int], timeout: float, threads: int) -> list[
     return results
 
 
-def save_json(results: list[dict], filename: str, metadata: dict | None = None) -> None:
+def save_json(results: list[dict], filename: str, metadata: Optional[dict] = None) -> None:
     payload = {"metadata": metadata or {}, "results": results}
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2, ensure_ascii=False)

@@ -24,20 +24,24 @@ Le projet est conçu pour être utilisé sur des environnements locaux (localhos
 Port-scanner/
 
 |-- scanner.py
+|
 |-- dashboard.py
+|
 |-- requirements.txt
+|
 |--README.md
+|
 |-- .gitignore
 |
 |-- tests/
-
+|
 |    |-- test_auto.sh
-
+|
 |    |-- test_auto_docker.sh
-
+|
 |
 |--- examples/
-
+|
 |    |-- scan_example.json
 
 ---

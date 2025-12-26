@@ -22,27 +22,19 @@ Le projet est conçu pour être utilisé sur des environnements locaux (localhos
 
 ## Structure du projet
 Port-scanner/
-
 |-- scanner.py
-|
 |-- dashboard.py
-|
 |-- requirements.txt
-|
 |--README.md
-|
 |-- .gitignore
 |
 |-- tests/
-|
 |    |-- test_auto.sh
-|
 |    |-- test_auto_docker.sh
 |
-|
 |--- examples/
-|
 |    |-- scan_example.json
+<img width="470" height="237" alt="image" src="https://github.com/user-attachments/assets/05bd9fd9-1912-48e4-b70f-9974193de957" />
 
 ---
 

@@ -21,7 +21,7 @@ Le projet est conçu pour être utilisé sur des environnements locaux (localhos
 ---
 
 ## Structure du projet
-
+```
 port-scanner/
 ├── scanner.py
 ├── dashboard.py
@@ -35,10 +35,8 @@ port-scanner/
 │
 ├── examples/
 │   └── scan_example.json
-
-
+```
 ---
-
 ## Prérequis
 - Python 3.8+
 - pip
